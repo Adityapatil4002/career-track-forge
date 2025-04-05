@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import {
@@ -44,6 +43,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -121,7 +121,16 @@ const EmployerDashboard = () => {
           getEmployerAnalytics(),
         ]);
         setJobs(employerJobs);
-        setAnalytics(employerAnalytics);
+        setAnalytics({
+          totalJobs: employerAnalytics.totalJobs,
+          totalApplications: employerAnalytics.totalApplications,
+          applicationsByStatus: {
+            pending: employerAnalytics.applicationsByStatus.pending || 0,
+            reviewed: employerAnalytics.applicationsByStatus.reviewed || 0,
+            accepted: employerAnalytics.applicationsByStatus.accepted || 0,
+            rejected: employerAnalytics.applicationsByStatus.rejected || 0,
+          },
+        });
       } catch (error) {
         console.error("Error loading dashboard:", error);
         toast({
@@ -545,7 +554,6 @@ const CreateJobDialog = ({ onJobCreated }: CreateJobDialogProps) => {
       const currentUser = getCurrentUser();
       if (!currentUser) return;
       
-      // In a real app, this would be an API call
       const filteredRequirements = formData.requirements.filter((req) => req.trim() !== "");
       
       await import("@/lib/api").then(({ createJob }) => {
