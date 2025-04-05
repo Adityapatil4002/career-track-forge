@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Index from "./pages/Index";
 import JobsPage from "./pages/JobsPage";
 import JobDetailPage from "./pages/JobDetailPage";
@@ -13,11 +13,18 @@ import RegisterPage from "./pages/RegisterPage";
 import SeekerDashboard from "./pages/SeekerDashboard";
 import EmployerDashboard from "./pages/EmployerDashboard";
 import SearchPage from "./pages/SearchPage";
+import CompaniesPage from "./pages/CompaniesPage";
 import NotFound from "./pages/NotFound";
 
 const App = () => {
   // Create a client inside the component to ensure it's created in the React lifecycle
   const [queryClient] = useState(() => new QueryClient());
+
+  // Apply persistent theme on app load
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.classList.toggle('light-theme', savedTheme === 'light');
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -29,6 +36,7 @@ const App = () => {
             <Route path="/" element={<Index />} />
             <Route path="/jobs" element={<JobsPage />} />
             <Route path="/jobs/:id" element={<JobDetailPage />} />
+            <Route path="/companies" element={<CompaniesPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/seeker/dashboard" element={<SeekerDashboard />} />

@@ -46,6 +46,46 @@
     --sidebar-border: 0 0% 15%;
     --sidebar-ring: 196 100% 44%;
   }
+
+  :root.light-theme {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 12%;
+
+    --primary: 196 100% 40%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 12%;
+
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 196 100% 40%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 86%;
+    --input: 0 0% 86%;
+    --ring: 196 100% 40%;
+
+    /* Sidebar variables - light theme */
+    --sidebar-background: 0 0% 96%;
+    --sidebar-foreground: 0 0% 12%;
+    --sidebar-primary: 196 100% 40%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 92%;
+    --sidebar-accent-foreground: 0 0% 12%;
+    --sidebar-border: 0 0% 86%;
+    --sidebar-ring: 196 100% 40%;
+  }
 }
 
 @layer base {
@@ -55,6 +95,13 @@
 
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Ensure smooth transitions between themes */
+  .card, .button, input, select, .bg-card, .bg-primary, .bg-secondary, .bg-muted, 
+  .border, .text-foreground, .text-muted-foreground {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
 }
 
@@ -66,4 +113,65 @@
   .job-button {
     @apply bg-job text-white hover:bg-job-hover transition-colors duration-200;
   }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Fix for SelectContent background in dark mode */
+[data-radix-popper-content-wrapper] {
+  @apply z-50;
+}
+
+.light-theme [data-radix-select-content] {
+  @apply bg-background border-border;
+}
+
+/* Fix for making sure popovers and dropdowns have backgrounds */
+.radix-side-bottom {
+  @apply bg-popover border border-border;
+}
+
+/* Fix for mobile menu */
+.mobile-menu-enter {
+  transform: translateX(100%);
+}
+
+.mobile-menu-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms;
+}
+
+.mobile-menu-exit {
+  transform: translateX(0);
+}
+
+.mobile-menu-exit-active {
+  transform: translateX(100%);
+  transition: transform 300ms;
 }
